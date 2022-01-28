@@ -1,6 +1,20 @@
 'RnB', 'Country', 'Pop_Rock', 'New Age', 'Latin', 'Folk', 'Rap', 'Jazz', 'Electronic', 'Reggae', 'Blues', 'International', 'Vocal'
 1543,     2134,     33179,       92,       988,     988,   1838,   644,     1724,       725,       419,         229,          77
 
+    model = Sequential()
+    model.add(Dense(hidden_units, input_dim=(5000,)))
+    model.add(Activation('relu'))
+    model.add(Dropout(dropout))
+    model.add(Dense(hidden_units))
+    model.add(Activation('relu'))
+    model.add(Dropout(dropout))
+    model.add(Dense(13, activation='softmax'))
+
+    model = Sequential()
+    model.add(Dense(350, input_shape=(5000,), activation='relu'))
+    model.add(Dense(50, activation='relu'))
+    model.add(Dense(13, activation='softmax'))
+
 [ 7.97495528  1.63764602  2.00188603  3.44646308 14.65483235  5.3248925
   3.39864298 35.72115385  0.10347397  1.85464076  4.62160481  2.21383523
  40.82417582]
