@@ -1,21 +1,13 @@
 from __future__ import print_function
 
-from statistics import mean
-
 import numpy as np
 import pandas as pd
-from imblearn.over_sampling import SMOTE
 from sklearn import preprocessing
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
-import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split, RepeatedStratifiedKFold, cross_validate
 from collections import Counter
-
-from sklearn.neural_network import MLPClassifier
 from sklearn.utils import class_weight
-from imblearn.ensemble import BalancedRandomForestClassifier
 
 from src.data_preprocessing import prepare_arrays_of_occurance_test_cd1, insert_cd1_test_x_to_array, prepare_test_y_cd1, \
     prepare_arrays_of_occurance_train_cd1, insert_cd1_train_x_to_array, prepare_train_y_cd1, \
@@ -39,11 +31,6 @@ def train_cd1_logistic_regression(weighted=True):
         "International": 14.65483235,
         "Vocal": 40.82417582,
     }
-    # arr_test = prepare_arrays_of_occurance_test_cd1()
-    # test_x = insert_cd1_test_x_to_array(arr_test)
-    # test_y = prepare_test_y_cd1()
-    # pd_test_y = pd.array(test_y)
-    # pd_test_x = pd.array(test_x, dtype=int)
 
     arr_train = prepare_arrays_of_occurance_train_cd1()
     train_x = insert_cd1_train_x_to_array(arr_train)
@@ -51,25 +38,15 @@ def train_cd1_logistic_regression(weighted=True):
     pd_train_y = pd.array(train_y)
     pd_train_x = pd.array(train_x, dtype=int)
 
-    # pd_test_x.extend(pd_train_x)
-    # pd_test_y.extend(pd_train_y)
-
     x_train, x_test, y_train, y_test = train_test_split(pd_train_x, pd_train_y, test_size=0.2)
-    print(Counter(y_train).keys())
-    print(Counter(y_train).values())
     x_train = preprocessing.normalize(x_train)
     x_train = preprocessing.scale(x_train)
 
     x_test = preprocessing.normalize(x_test)
     x_test = preprocessing.scale(x_test)
 
-    print(Counter(y_train).keys())
-    print(Counter(y_train).values())
-
     classes = np.unique(y_train)
     weights = class_weight.compute_class_weight(class_weight='balanced', classes=classes, y=y_train)
-
-    print(weights)
 
     print("x_train: %s, x_test: %s, y_train: %s, y_test: %s" % (len(x_train), len(x_test), len(y_train), len(y_test)))
 
@@ -87,15 +64,11 @@ def train_cd1_logistic_regression(weighted=True):
     from sklearn.metrics import accuracy_score, f1_score
 
     accuracy = accuracy_score(y_test, y_pred)
-    # f1 = f1_score(y_test, y_pred, average='weighted')
     cm = confusion_matrix(y_test, y_pred, labels=classes, normalize='true')
-    # plot_confusion_matrix(cm=cm, classes=classes, normalize=True)
-    print(cm)
     plot_confusion_matrix(cm=cm, classes=classes, title=f"CD1 LogisticRegression sag ovr")
     print(classification_report(y_test, y_pred, target_names=classes))
-
     print(accuracy)
-    # print(f"f1: {f1}")
+
 
 if __name__ == '__main__':
     train_cd1_logistic_regression(weighted=False)

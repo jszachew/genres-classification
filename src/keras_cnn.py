@@ -1,22 +1,13 @@
 from __future__ import print_function
 import time
-from statistics import mean
-from keras import backend as K
 import numpy as np
 import pandas as pd
 from imblearn.over_sampling import SMOTE
 from sklearn import preprocessing
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
-from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split, RepeatedStratifiedKFold, cross_validate
-from collections import Counter
 from keras.layers import Dense, Input, GlobalMaxPooling1D, Flatten, Dropout
 from keras.layers import Conv1D, MaxPooling1D, Embedding
-
-from sklearn.neural_network import MLPClassifier
-from sklearn.utils import class_weight
-from imblearn.ensemble import BalancedRandomForestClassifier
 
 from src.data_preprocessing import prepare_arrays_of_occurance_test_cd1, insert_cd1_test_x_to_array, prepare_test_y_cd1, \
     prepare_arrays_of_occurance_train_cd1, insert_cd1_train_x_to_array, prepare_train_y_cd1, \
@@ -24,10 +15,6 @@ from src.data_preprocessing import prepare_arrays_of_occurance_test_cd1, insert_
 from utils import plot_confusion_matrix
 from keras.utils.np_utils import to_categorical
 from keras.models import Sequential, Model
-from keras import layers, optimizers
-
-from numpy import array
-from numpy import argmax
 import matplotlib.pyplot as plt
 
 
@@ -62,15 +49,12 @@ def train_cd1_mlp(weighted=True):
     train_y = prepare_train_y_cd1()
     pd_train_y = pd.array(train_y)
     pd_train_x = pd.array(train_x, dtype=int)
-    print(pd_train_x[:3])
-
 
     oversample = SMOTE(k_neighbors=1)
     over_X, over_y = oversample.fit_resample(pd_train_x, pd_train_y)
 
     le = preprocessing.LabelEncoder()
     le.fit(over_y)
-    print(over_y)
     over_y = le.transform(over_y)
     print("inverse")
     print(le.inverse_transform([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]))
@@ -79,8 +63,6 @@ def train_cd1_mlp(weighted=True):
     x_train, x_test, y_train, y_test = train_test_split(over_X, over_y, test_size=0.2, stratify=over_y)
 
     classes = np.unique(le.inverse_transform(np.argmax(y_train, axis=1)))
-    print(classes)
-    input_dim = x_train.shape[1]  # Number of features
 
     model = Sequential([
         Embedding(5000, 128),
@@ -114,21 +96,11 @@ def train_cd1_mlp(weighted=True):
     plot_history(history)
     plt.clf()
     y_pred = model.predict(x_test)
-    print(y_pred)
-    print(np.argmax(y_pred, axis=1))
-    print(np.argmax(y_test, axis=1))
-    # Accuracy
-    # from sklearn.metrics import accuracy_score, f1_score
 
-    # accuracy = accuracy_score(y_test, y_pred)
-    # f1 = f1_score(y_test, y_pred, average='weighted')
     cm = confusion_matrix(np.argmax(y_test, axis=1), np.argmax(y_pred, axis=1), normalize='true')
-    # plot_confusion_matrix(cm=cm, classes=classes, normalize=True)
     print(cm)
     plot_confusion_matrix(cm=cm, classes=classes, title=f"CD1 MLP simple network")
     print(classification_report(np.argmax(y_test, axis=1), np.argmax(y_pred, axis=1), target_names=classes))
-    # print(accuracy)
-    # print(f"f1: {f1}")
 
 
 if __name__ == '__main__':

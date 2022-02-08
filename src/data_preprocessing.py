@@ -3,7 +3,6 @@ from collections import Counter
 import numpy as np
 import pandas as pd
 from random import seed
-from random import random
 
 from sklearn.model_selection import train_test_split
 
@@ -78,8 +77,8 @@ def select_only_20rock_cd1_1_train():
     df_filtered = metadata_train.loc[lambda x: (pd.notnull(x['genre_cd1_1'])) & ((x['genre_cd1_1'] != 'Pop_Rock') | (x['randNumCol'] < 3))]
     print(df_filtered.head(40))
     df_filtered = df_filtered.drop('randNumCol', 1)
-    #df_filtered = df_filtered.drop(df_filtered.index[pd.notnull(x['genre_cd1_1']) & ((x['genre_cd1_1'] != 'Pop_Rock') | (np.random.random() < 0.2)) )
-    #df_filtered = df_filtered[pd.notnull(df_filtered['genre_cd1_1']) & (np.random.random(5000) <0.2)]
+    # df_filtered = df_filtered.drop(df_filtered.index[pd.notnull(x['genre_cd1_1']) & ((x['genre_cd1_1'] != 'Pop_Rock') | (np.random.random() < 0.2)) )
+    # df_filtered = df_filtered[pd.notnull(df_filtered['genre_cd1_1']) & (np.random.random(5000) <0.2)]
     # for index, data in metadata_train.iterrows():
     #    iter = iter + 1
     #    if iter % 500 == 0:
@@ -99,8 +98,8 @@ def select_only_20rock_cd2_1_train():
     df_filtered = metadata_train.loc[lambda x: (pd.notnull(x['genre_cd2_1'])) & ((x['genre_cd2_1'] != 'Rock') | (x['randNumCol'] < 5))]
     print(df_filtered.head(40))
     df_filtered = df_filtered.drop('randNumCol', 1)
-    #df_filtered = df_filtered.drop(df_filtered.index[pd.notnull(x['genre_cd1_1']) & ((x['genre_cd1_1'] != 'Pop_Rock') | (np.random.random() < 0.2)) )
-    #df_filtered = df_filtered[pd.notnull(df_filtered['genre_cd1_1']) & (np.random.random(5000) <0.2)]
+    # df_filtered = df_filtered.drop(df_filtered.index[pd.notnull(x['genre_cd1_1']) & ((x['genre_cd1_1'] != 'Pop_Rock') | (np.random.random() < 0.2)) )
+    # df_filtered = df_filtered[pd.notnull(df_filtered['genre_cd1_1']) & (np.random.random(5000) <0.2)]
     # for index, data in metadata_train.iterrows():
     #    iter = iter + 1
     #    if iter % 500 == 0:
@@ -238,9 +237,6 @@ def check_data():
     train_y = prepare_train_y_cd2()
     pd_train_y = pd.array(train_y)
     pd_train_x = pd.array(train_x, dtype=int)
-
-    # pd_test_x.extend(pd_train_x)
-    # pd_test_y.extend(pd_train_y)
 
     x_train, x_test, y_train, y_test = train_test_split(pd_train_x, pd_train_y, test_size=0.2)
 
