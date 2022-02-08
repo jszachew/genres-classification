@@ -1,4 +1,4 @@
-#Music Genre Classification (with text representation)
+# Music Genre Classification (with text representation)
 
 This project is to investigate music genre classification problem when songs are in its texts representation.
 
@@ -44,6 +44,8 @@ More precise metrics are below:
 |     accuracy    |          |         |    0.91  | 16035  |
 |    macro avg    |   0.91   |   0.91  |    0.91  | 16035  |
 | weighted avg    |   0.91   |   0.91  |    0.91  | 16035  |
+
+
 Also for CD2 labeling results looks pretty good:
 ![Alt text](results/final_results/CD2_MLP_200/CD2_MLP_with_dropout_sgd_network_2022-01-15_21-16-04.png?raw=true "MLP confusion matrix")
 
